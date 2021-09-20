@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block Title %} Resultados de la busqueda {% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+
+        {% for Libro in Data %}
+        <div class="col-sm-3 mb-4">
+            <div class="card mb-4 text-dark">
+              <div class="card-body space-betwen">
+                <h3 class="card-title">{{ Libro.titulo }}</h3>
+                <h5 class="card-subtitle mb-2 text-muted">ISBN: {{ Libro.isbn }}</h5>
+                <p class="card-text">del autor: {{ Libro.autor }} en el año: {{ Libro.año }}</p>
+                <a href="#" class="card-link">Mas informacion</a>
+              </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock %}

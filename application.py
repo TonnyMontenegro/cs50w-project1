@@ -99,6 +99,16 @@ def logout():
 @login_required
 def search():
 
+    Consulta = ('%' + request.args.get("consulta") + '%').title()
+
+    Res= db.execute("SELECT isbn,titulo,autor,año FROM books WHERE isbn LIKE :Consulta OR titulo LIKE :Consulta OR autor LIKE :Consulta OR año LIKE :Consulta LIMIT 100", {"Consulta": Consulta})
+    db.execute
 
 
-    return render_template(("index.html"))
+    if Res.rowcount == 0:
+        flash("No se encontro ningun libro que coincida con lo ingresado")
+        return redirect(url_for("home"))
+
+    libros = Res.fetchall()
+
+    return render_template("books.html", Data=libros)

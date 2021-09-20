@@ -7,13 +7,13 @@
 
         <form action="{{ url_for('search') }}" method="get" class="text-centered">
         <div class="centered col-sm-4 text-dark">
-            <input class="form-control form-control-lg" type="text" placeholder="ISBN, autor o Titulo" required>
+            <input class="form-control form-control-lg" type="text" placeholder="ISBN, autor o Titulo" name="consulta" required>
             <small id="passwordHelpBlock" class="form-text text-muted">
               ej: 1421808307
             </small>
         </div>
 
-            <button class="btn btn-primary margin-3">Consultar libro</button>
+            <button class="btn btn-primary margin-3" type="submit">Consultar libro</button>
         </form>
 
     </div>

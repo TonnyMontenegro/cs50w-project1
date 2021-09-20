@@ -17,7 +17,7 @@ h1,h2,h3
 .jumbotron{
 	margin: 5%;
 	padding: 5%;
-	height: 85vh;
+	min-height: 85vh;
 	width: 80 vw;
 
 }
@@ -166,3 +166,18 @@ margin-3{
 	color:rgb(255, 255, 255);
 	margin-bottom:0;
   }
+
+.row {
+   display: flex;
+   flex-wrap: wrap;
+}
+
+.row > div[class*='col-'] {
+  display: flex;
+}
+
+.space-betwen{
+	display: flex;
+	flex-direction: column;
+  	justify-content: space-between;
+}
