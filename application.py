@@ -93,3 +93,8 @@ def logout():
     session.clear()
     flash("Sesion cerrada")
     return redirect(url_for("login"))
+
+
+@app.route("/search")
+def search():
+    return render_template(("index.html"))
