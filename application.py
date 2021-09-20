@@ -112,3 +112,19 @@ def search():
     libros = Res.fetchall()
 
     return render_template("books.html", Data=libros)
+
+
+@app.route("/isbn<code>", methods=["GET","POST"])
+@login_required
+def isbn(code):
+    if request.method == "GET":
+        consulta = db.execute("SELECT isbn, titulo, autor, año FROM books WHERE isbn = :isbncode", {"isbncode": code})
+        data=consulta.fetchall()
+
+        response = requests.get("https://www.googleapis.com/books/v1/volumes?q=isbn:"+code).json()
+
+        if response.status_code == 442 or response.status_code == 404:
+            raise Exception("Error: problema con la api, no se puede procesar o no se encuentra")
+
+        ratings_count =
+        average_rating
