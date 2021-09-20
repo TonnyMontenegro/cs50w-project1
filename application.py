@@ -95,6 +95,10 @@ def logout():
     return redirect(url_for("login"))
 
 
-@app.route("/search")
+@app.route("/search", methods=["GET"])
+@login_required
 def search():
+
+
+
     return render_template(("index.html"))
