@@ -181,3 +181,11 @@ margin-3{
 	flex-direction: column;
   	justify-content: space-between;
 }
+
+.book-img{
+	width:14vw;
+}
+
+.book-card{
+	width:40vw;
+}

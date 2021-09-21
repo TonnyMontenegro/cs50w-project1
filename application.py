@@ -1,4 +1,5 @@
 import os
+import requests
 
 from flask import Flask, session, flash, render_template, request, redirect, session, url_for
 from flask_session import Session
@@ -12,7 +13,6 @@ from flask_bcrypt import Bcrypt,generate_password_hash,check_password_hash
 from functools import wraps
 
 app = Flask(__name__)
-
 #Encriptacion
 bcrypt = Bcrypt(app)
 
@@ -102,7 +102,7 @@ def search():
     Consulta = ('%' + request.args.get("consulta") + '%').title()
 
     Res= db.execute("SELECT isbn,titulo,autor,año FROM books WHERE isbn LIKE :Consulta OR titulo LIKE :Consulta OR autor LIKE :Consulta OR año LIKE :Consulta LIMIT 100", {"Consulta": Consulta})
-    db.execute
+    db.commit()
 
 
     if Res.rowcount == 0:
@@ -114,17 +114,63 @@ def search():
     return render_template("books.html", Data=libros)
 
 
-@app.route("/isbn<code>", methods=["GET","POST"])
+@app.route("/review/<code>", methods=["GET","POST"])
 @login_required
-def isbn(code):
+def review(code):
     if request.method == "GET":
-        consulta = db.execute("SELECT isbn, titulo, autor, año FROM books WHERE isbn = :isbncode", {"isbncode": code})
-        data=consulta.fetchall()
+        consulta = db.execute("SELECT isbn,titulo,autor,año FROM books WHERE isbn = :isbncode",{"isbncode": code})
+        db.commit()
+        data = consulta.fetchone()
 
-        response = requests.get("https://www.googleapis.com/books/v1/volumes?q=isbn:"+code).json()
+        response = requests.get("https://www.googleapis.com/books/v1/volumes?q=isbn:"+code)
+
+        responsejson = response.json()
 
         if response.status_code == 442 or response.status_code == 404:
             raise Exception("Error: problema con la api, no se puede procesar o no se encuentra")
 
-        ratings_count =
-        average_rating
+        existeR =  "ratingsCount" in responsejson["items"][0]["volumeInfo"]
+        if existeR:
+            rating_counts = responsejson["items"][0]["volumeInfo"]["ratingsCount"]
+        else:
+            rating_counts = "No se tienen puntuaciones aun"
+
+        existeA =  "averageRating" in responsejson["items"][0]["volumeInfo"]
+        if existeA:
+            average_rating = responsejson["items"][0]["volumeInfo"]["averageRating"]
+        else:
+            average_rating = "No se tienen promedio de puntuacion aun"
+
+        existeD =  "description" in responsejson["items"][0]["volumeInfo"]
+        if existeD:
+            description = responsejson["items"][0]["volumeInfo"]["description"]
+        else:
+            description = "No se tienen una descripcion sobre este libro"
+
+        return render_template("review.html", rating_counts=rating_counts,average_rating=average_rating,Libro=data, description=description)
+
+    else:
+
+        Usuario = session["user_id"]
+
+        consulta = db.execute("SELECT id FROM books WHERE isbn = :isbncode",{"isbncode": code})
+        db.commit()
+        id_book = consulta.fetchone()[0]
+
+        check =  db.execute("SELECT id FROM reviews WHERE user_id = :Usuario AND book_id = :id_book",{"Usuario": Usuario, "id_book": id_book})
+        db.commit()
+
+        if check.rowcount == 1:
+            flash("Ya has realizado una reseña de este libro, no puedes hacer otra")
+            return redirect("/review/"+code)
+
+        rating = request.form.get("Puntuacion")
+        comentary = request.form.get("Comentario")
+
+        rating = int(rating)
+
+        db.execute("INSERT INTO reviews (comentario, puntuacion, user_id, book_id) VALUES (:comentary,:rating, :Usuario, :id_book)",{"comentary": comentary,"rating": rating,"Usuario": Usuario,"id_book": id_book})
+        db.commit()
+
+        flash("Se ha subido su reseña con exito")
+        return redirect("/review/"+code)

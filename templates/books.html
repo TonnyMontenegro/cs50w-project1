@@ -13,7 +13,7 @@
                 <h3 class="card-title">{{ Libro.titulo }}</h3>
                 <h5 class="card-subtitle mb-2 text-muted">ISBN: {{ Libro.isbn }}</h5>
                 <p class="card-text">del autor: {{ Libro.autor }} en el año: {{ Libro.año }}</p>
-                <a href="#" class="card-link">Mas informacion</a>
+                <a href="/review/{{ Libro.isbn }}" class="btn btn-primary">Mas informacion</a>
               </div>
             </div>
         </div>
