@@ -11,8 +11,8 @@
         <h6 class="text-muted">{{ Libro.isbn }}</h6>
         <h6>{{ Libro.autor }}</h6>
         <hr>
-        <p>Numero de reseñas: {{ rating_counts }}</p>
-        <p>Promedio de estrellas: {{ average_rating }}</p>
+        <p>Numero de reseñas: {{ rating_counts }} <i class="fas fa-comment-alt"></i></p>
+        <p>Promedio de estrellas: {{ average_rating }} <i class="fas fa-star"></i></p>
         <p class="card-text">descripcion:</p>
         <p class="card-text">{{ description }}</p>
       </div>
@@ -38,17 +38,18 @@
     </form>
     </div>
 
+    <hr>
+
     <div class="container">
     <div class="row">
-
-        {% for Comentario in Reviews %}
-        <div class="col-sm-3 mb-4">
+        {% for Comentario in Comentarios %}
+        <div class="col-sm-4 mb-2">
             <div class="card mb-4 text-dark">
-              <div class="card-body space-betwen">
-                <h3 class="card-title">{{ Comentario.N }}</h3>
-                <h5 class="card-subtitle mb-2 text-muted">ISBN: {{ Libro.isbn }}</h5>
-                <p class="card-text">del autor: {{ Libro.autor }} en el año: {{ Libro.año }}</p>
-                <a href="/review/{{ Libro.isbn }}" class="btn btn-primary">Mas informacion</a>
+              <div class="card-body space-betwen text-centered">
+                <h3 class="card-title">{{ Comentario["username"] }}</h3>
+                <h5 class="card-subtitle mb-2 text-muted">Acerca de: {{ Libro.titulo }}</h5>
+                <p class="card-text">Puntuacion: {{ Comentario["puntuacion"] }} <i class="fas fa-star"></i></p>
+                <p class="card-text">"{{ Comentario["comentario"] }}"</p>
               </div>
             </div>
         </div>

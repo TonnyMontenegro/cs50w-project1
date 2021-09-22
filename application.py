@@ -1,7 +1,7 @@
 import os
 import requests
 
-from flask import Flask, session, flash, render_template, request, redirect, session, url_for
+from flask import Flask, session, flash, render_template, request, redirect, session, url_for, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -36,6 +36,10 @@ def login_required(f):
             return redirect(url_for("login"))
         return f(*args, **kwargs)
     return decorated_function
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return 'This page does not exist', 404
 
 @app.route("/")
 @login_required
@@ -122,6 +126,9 @@ def review(code):
         db.commit()
         data = consulta.fetchone()
 
+        if data is None:
+            return render_template('404.html'),404
+
         response = requests.get("https://www.googleapis.com/books/v1/volumes?q=isbn:"+code)
 
         responsejson = response.json()
@@ -133,13 +140,13 @@ def review(code):
         if existeR:
             rating_counts = responsejson["items"][0]["volumeInfo"]["ratingsCount"]
         else:
-            rating_counts = "No se tienen puntuaciones aun"
+            rating_counts = "No existen puntuaciones"
 
         existeA =  "averageRating" in responsejson["items"][0]["volumeInfo"]
         if existeA:
             average_rating = responsejson["items"][0]["volumeInfo"]["averageRating"]
         else:
-            average_rating = "No se tienen promedio de puntuacion aun"
+            average_rating = "No se tienen promedio"
 
         existeD =  "description" in responsejson["items"][0]["volumeInfo"]
         if existeD:
@@ -147,7 +154,15 @@ def review(code):
         else:
             description = "No se tienen una descripcion sobre este libro"
 
-        return render_template("review.html", rating_counts=rating_counts,average_rating=average_rating,Libro=data, description=description)
+        consulta2 = db.execute("SELECT id FROM books WHERE isbn = :isbncode",{"isbncode": code})
+        db.commit()
+        book_id = consulta2.fetchone()[0]
+
+        consulta3 = db.execute("SELECT comentario ,puntuacion ,username FROM users JOIN reviews ON users.id = reviews.user_id WHERE book_id = :id_book",{"id_book": book_id})
+        db.commit()
+        comentarios = consulta3.fetchall()
+
+        return render_template("review.html", rating_counts=rating_counts,average_rating=average_rating,Libro=data, description=description,Comentarios=comentarios)
 
     else:
 
@@ -174,3 +189,40 @@ def review(code):
 
         flash("Se ha subido su reseña con exito")
         return redirect("/review/"+code)
+
+@app.route("/api/<code>", methods=["GET"])
+def API(code):
+    consulta = db.execute("SELECT isbn,titulo,autor,año FROM books WHERE isbn = :isbncode",{"isbncode": code}).fetchone()
+    db.commit()
+
+
+    if consulta is None:
+        return jsonify({"Error","Libro no disponible en la BD"}),422
+    else:
+            isbn = consulta[0]
+            titulo = consulta[1]
+            autor = consulta[2]
+            año = consulta[3]
+            rating_count = db.execute("SELECT COUNT(comentario) FROM reviews WHERE book_id = :id_book",{"id_book": code}).fetchone()
+            db.commit()
+            if rating_count[0] == 0:
+                rating="No se tienen comentarios aun"
+            else:
+                rating=rating_count[0]
+
+            average_rating = db.execute("SELECT AVG(puntuacion) FROM reviews WHERE book_id = :id_book",{"id_book": code}).fetchone()
+            db.commit()
+            if average_rating[0] == None:
+                average="No se tiene promedio de comentarios aun"
+            else:
+                average=average_rating[0]
+
+            json = {
+                "title": titulo,
+                "author": autor,
+                "year": año,
+                "isbn": code,
+                "review_count": rating,
+                "average_score": average
+            }
+            return jsonify(json)
