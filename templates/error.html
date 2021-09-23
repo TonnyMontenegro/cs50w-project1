@@ -1,12 +1,10 @@
+<!--Pantalla que se muestra en caso de algun error general al usuario-->
 {% extends "layout.html" %}
-
 {% block Title %} Error {% endblock %}
-
-
 {% block body %}
-
-    <div class="alert alert-danger col-sm-5 centered" role="alert">
-        <i class="fas fa-exclamation-triangle"></i>
-        {{ Mensaje }}
-    </div>
+<div class="alert alert-danger col-sm-5 centered" role="alert">
+	<i class="fas fa-exclamation-triangle"></i>
+	{{ Mensaje }}
+</div>
 {% endblock %}
+<!--/Pantalla que se muestra en caso de algun error general al usuario-->

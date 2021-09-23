@@ -1,22 +1,21 @@
+<!--pantalla de inicio de sesion para el usuario-->
 {% extends "layout.html" %}
-
 {% block Title %}
-    Inicio de sesion
+Inicio de sesion
 {% endblock %}
-
 {% block body %}
-    <div>
-        <form action="{{ url_for('login') }}" method="post" class="text-centered">
-        <div class="form-floating centered col-sm-4 text-dark">
-            <input type="text" class="form-control" id="username" name="username" required>
-            <label for="username">usuario <i class="fas fa-user fa-xs ialing"></i></label>
-        </div>
-
-        <div class="form-floating centered col-sm-4 text-dark">
-            <input type="password" name="password"  class="form-control" id="password" required>
-            <label for="password">Contraseña <i class="fas fa-unlock-alt fa-xs"></i></label>
-        </div>
-            <button class="btn btn-primary margin-3">Iniciar sesion</button>
-        </form>
-    </div>
+<div>
+	<form action="{{ url_for('login') }}" method="post" class="text-centered">
+		<div class="form-floating centered col-sm-4 text-dark">
+			<input type="text" class="form-control" id="username" name="username" required>
+			<label for="username">usuario <i class="fas fa-user fa-xs ialing"></i></label>
+		</div>
+		<div class="form-floating centered col-sm-4 text-dark">
+			<input type="password" name="password"  class="form-control" id="password" required>
+			<label for="password">Contraseña <i class="fas fa-unlock-alt fa-xs"></i></label>
+		</div>
+		<button class="btn btn-primary margin-3">Iniciar sesion</button>
+	</form>
+</div>
 {% endblock %}
+<!--/pantalla de inicio de sesion para el usuario-->

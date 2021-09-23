@@ -1,63 +1,62 @@
+<!--Pantalla de informacion detallada de un libro y sus reviews-->
 {% extends "layout.html" %}
 {% block Title %} Libro y reseñas {% endblock %}
-
 {% block body %}
 <div class="container">
-
-    <div class="card text-dark book-card centered">
-      <img src="http://covers.openlibrary.org/b/isbn/{{ Libro.isbn }}-M.jpg" class="card-img-top book-img centered" alt="caratula de libro isbn:{{ Libro.isbn }}">
-      <div class="card-body text-centered">
-        <h4 class="card-title">{{ Libro.titulo }} ({{ Libro.año }})</h4>
-        <h6 class="text-muted">{{ Libro.isbn }}</h6>
-        <h6>{{ Libro.autor }}</h6>
-        <hr>
-        <p>Numero de reseñas: {{ rating_counts }} <i class="fas fa-comment-alt"></i></p>
-        <p>Promedio de estrellas: {{ average_rating }} <i class="fas fa-star"></i></p>
-        <p class="card-text">descripcion:</p>
-        <p class="card-text">{{ description }}</p>
-      </div>
-      <hr>
-      <form method="POST">
-      <div class="card-body text-centered">
-      <h3 class="card-title">Reseña de libro</h3>
-      <div class="col-sm-4 mb-2 centered">
-            <select id="Rating" name="Puntuacion" class="form-select" aria-label="seleccionar puntuacion" required>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-            </div>
-            <div class="col-sm-10 centered mb-1">
-          <label for="comentary" class="form-label">Comentario:</label>
-          <textarea class="form-control" id="comentary" name="Comentario" rows="4" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary centered">Subir reseña</button>
-    </div>
-    </form>
-    </div>
-
-    <hr>
-
-    <div class="container">
-    <div class="row">
-        {% for Comentario in Comentarios %}
-        <div class="col-sm-4 mb-2">
-            <div class="card mb-4 text-dark">
-              <div class="card-body space-betwen text-centered">
-                <h3 class="card-title">{{ Comentario["username"] }}</h3>
-                <h5 class="card-subtitle mb-2 text-muted">Acerca de: {{ Libro.titulo }}</h5>
-                <p class="card-text">Puntuacion: {{ Comentario["puntuacion"] }} <i class="fas fa-star"></i></p>
-                <p class="card-text">"{{ Comentario["comentario"] }}"</p>
-              </div>
-            </div>
-        </div>
-
-        {% endfor %}
-
-    </div>
+	<div class="card text-dark book-card centered">
+		<img src="http://covers.openlibrary.org/b/isbn/{{ Libro.isbn }}-M.jpg" class="card-img-top book-img centered" alt="caratula de libro isbn:{{ Libro.isbn }}">
+		<div class="card-body text-centered">
+		  <!--Se hace la insercion de la informacion del libro-->
+			<h4 class="card-title">{{ Libro.titulo }} ({{ Libro.año }})</h4>
+			<h6 class="text-muted">{{ Libro.isbn }}</h6>
+			<h6>{{ Libro.autor }}</h6>
+			<hr>
+			<p>Numero de reseñas: {{ rating_counts }} <i class="fas fa-comment-alt"></i></p>
+			<p>Promedio de estrellas: {{ average_rating }} <i class="fas fa-star"></i></p>
+			<p class="card-text">descripcion:</p>
+			<p class="card-text">{{ description }}</p>
+			<!--/Se hace la insercion de la informacion del libro-->
+		</div>
+		<hr>
+		<form method="POST">
+			<div class="card-body text-centered">
+				<h3 class="card-title">Reseña de libro</h3>
+				<div class="col-sm-4 mb-2 centered">
+					<select id="Rating" name="Puntuacion" class="form-select" aria-label="seleccionar puntuacion" required>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				</div>
+				<div class="col-sm-10 centered mb-1">
+					<label for="comentary" class="form-label">Comentario:</label>
+					<textarea class="form-control" id="comentary" name="Comentario" rows="4" required></textarea>
+				</div>
+				<button type="submit" class="btn btn-primary centered">Subir reseña</button>
+			</div>
+		</form>
+	</div>
+	<hr>
+	<div class="container">
+		<div class="row">
+		  <!--Para cada conjunto se comentarios se crea una card-->
+			{% for Comentario in Comentarios %}
+			<div class="col-sm-4 mb-2">
+				<div class="card mb-4 text-dark">
+					<div class="card-body space-betwen text-centered">
+						<h3 class="card-title">{{ Comentario["username"] }}</h3>
+						<h5 class="card-subtitle mb-2 text-muted">Acerca de: {{ Libro.titulo }}</h5>
+						<p class="card-text">Puntuacion: {{ Comentario["puntuacion"] }} <i class="fas fa-star"></i></p>
+						<p class="card-text">"{{ Comentario["comentario"] }}"</p>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			<!--/Para cada conjunto se comentarios se crea una card-->
+		</div>
+	</div>
 </div>
-
-    </div>
 {% endblock %}
+<!--/Pantalla de informacion detallada de un libro y sus reviews-->

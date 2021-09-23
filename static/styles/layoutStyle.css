@@ -105,6 +105,15 @@ margin-3{
 	{
 		font-size: medium;
 	}
+	.book-img
+	{
+	width:14+30vw;
+	}
+
+	.book-card
+	{
+		width:40+40vw;
+	}
 }
 
 @media (min-width: 1025px)
@@ -128,6 +137,17 @@ margin-3{
 	h4,a
 	{
 		font-size: larger;
+	}
+
+
+	.book-img
+	{
+	width:14vw;
+	}
+
+	.book-card
+	{
+		width:40vw;
 	}
 }
 
@@ -180,12 +200,4 @@ margin-3{
 	display: flex;
 	flex-direction: column;
   	justify-content: space-between;
-}
-
-.book-img{
-	width:14vw;
-}
-
-.book-card{
-	width:40vw;
 }

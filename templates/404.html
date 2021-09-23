@@ -1,9 +1,11 @@
+<!--pagina de error-->
 {% extends "layout.html" %}
 {% block title %}Page Not Found{% endblock %}
 {% block body %}
 <div class="centered text-centered container">
-  <h1>Page Not Found</h1>
-  <p>No se encontro o no existe el recurso que solicitaste
-  <p><a href="{{ url_for('home') }}" class"btn btn-primary">Regresar</a>
- </div>
+	<h1>Page Not Found</h1>
+	<p>No se encontro o no existe el recurso que solicitaste
+	<a href="{{ url_for('home') }}" class"btn btn-primary">Regresar</a>
+</div>
 {% endblock %}
+<!--/pagina de error-->

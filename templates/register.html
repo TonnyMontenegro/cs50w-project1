@@ -1,22 +1,21 @@
+<!--Pantalla de registro para el usuario-->
 {% extends "layout.html" %}
-
 {% block Title %}
-    Registro de nuevo usuario
+Registro de nuevo usuario
 {% endblock %}
-
 {% block body %}
-    <div>
-        <form action="{{ url_for('register') }}" method="post" class="text-centered">
-        <div class="form-floating centered col-sm-4 text-dark">
-            <input type="text" class="form-control" id="username" name="username" required>
-            <label for="username">usuario <i class="fas fa-user fa-xs ialing"></i></label>
-        </div>
-
-        <div class="form-floating centered col-sm-4 text-dark">
-            <input type="password" name="password"  class="form-control" id="password" required>
-            <label for="password">Contraseña <i class="fas fa-unlock-alt fa-xs"></i></label>
-        </div>
-            <button class="btn btn-primary margin-3">Registrarse</button>
-        </form>
-    </div>
+<div>
+	<form action="{{ url_for('register') }}" method="post" class="text-centered">
+		<div class="form-floating centered col-sm-4 text-dark">
+			<input type="text" class="form-control" id="username" name="username" required>
+			<label for="username">usuario <i class="fas fa-user fa-xs ialing"></i></label>
+		</div>
+		<div class="form-floating centered col-sm-4 text-dark">
+			<input type="password" name="password"  class="form-control" id="password" required>
+			<label for="password">Contraseña <i class="fas fa-unlock-alt fa-xs"></i></label>
+		</div>
+		<button class="btn btn-primary margin-3">Registrarse</button>
+	</form>
+</div>
 {% endblock %}
+<!--/Pantalla de registro para el usuario-->
