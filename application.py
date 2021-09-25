@@ -16,6 +16,10 @@ app = Flask(__name__)
 #Encriptacion
 bcrypt = Bcrypt(app)
 
+FLASK_APP = os.getenv("FLASK_APP")
+DB_URL = os.getenv("DB_URL")
+FLASK_DEBUG = os.getenv("FLASK_DEBUG")
+
 # Check for environment variable
 if not os.getenv("DB_URL"):
     raise RuntimeError("DATABASE_URL is not set")
