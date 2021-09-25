@@ -17,7 +17,7 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 # Check for environment variable
-if not os.getenv("DATABASE_URL"):
+if not os.getenv("DB_URL"):
     raise RuntimeError("DATABASE_URL is not set")
 
 # Configure session to use filesystem
@@ -26,7 +26,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Set up database
-engine = create_engine(os.getenv("DATABASE_URL"))
+engine = create_engine(os.getenv("DB_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 # wrap de seguridad para evitar que el usuario no autenticado pueda acceder a nuestra web
