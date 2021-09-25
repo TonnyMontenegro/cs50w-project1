@@ -263,13 +263,13 @@ def API(code):
     db.commit()
     # si no se ha comentado aun
     if rating_count[0] == 0:
-        rating="No se tienen comentarios aun"
+        rating=int(0)
     else:
         rating=int(rating_count[0])
     average_rating = db.execute("SELECT AVG(puntuacion) FROM reviews WHERE book_id = :id_book",{"id_book": book_id}).fetchone()
     db.commit()
     if average_rating[0] == None:
-        average="No se tiene promedio de comentarios aun"
+        average=int(0)
     else:
         average=int(average_rating[0])
 
